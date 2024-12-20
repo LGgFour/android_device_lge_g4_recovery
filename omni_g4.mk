@@ -22,6 +22,10 @@ $(call inherit-product, build/target/product/embedded.mk)
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
+# FDE decrypt
+PRODUCT_PACKAGES += \
+    qcom_decrypt
+
 PRODUCT_PACKAGES += \
 	charger_res_images \
 	charger \

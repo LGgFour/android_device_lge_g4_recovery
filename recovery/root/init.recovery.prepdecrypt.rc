@@ -1,34 +1,20 @@
-# needed to properly decrypt on Oreo
-# decrypt on Oreo requires vold decrypt + qseecomd in TWRP:
-# TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
-# Using just vold or just qseecomd will fail.
+# special init handling to support dynamically loading
+# all required libs for decryption
 
-service prepdecrypt /sbin/prepdecrypt.sh
+# enable qcom decrypt debug
+on init
+    setprop prepdecrypt.loglevel 2
+
+#on property:ro.crypto.state=encrypted
+#    setprop crypto.ready 0
+#    setprop cryptprep.state running
+#    start prepdecrypt_sfx
+
+# copy qseecomd & friends from system/vendor
+# (triggers crypto.ready)
+service prepdecrypt_sfx /sbin/prepdecrypt_sfx.sh
     oneshot
     disabled
     user root
     seclabel u:r:recovery:s0
 
-service hwservicemanager /sbin/hwservicemanager
-    user root
-    group root
-    disabled
-    onrestart setprop hwservicemanager.ready false
-    seclabel u:r:recovery:s0
-
-on init
-    # decrypt stuff (triggers crypto.ready)
-    # start prepdecrypt
-
-# we need that manifest to find keymaster-3 but it disappears
-# on vold decrypt due to a symlink process happening there
-# so we wait until that symlink finished and then ensuring
-# our manifest is there, too
-on property:vold_decrypt.symlinked_vendor=1
-   symlink /system/vendor/manifest.xml /vendor/manifest.xml
-
-on property:crypto.ready=1
-   start hwservicemanager
-
-on property:crypto.ready=0
-    stop hwservicemanager

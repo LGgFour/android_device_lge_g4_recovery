@@ -26,7 +26,7 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53.a57
 
 # BOOT IMAGE
-BOARD_KERNEL_CMDLINE := maxcpus console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 user_debug=31 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x37 androidboot.hardware=p1 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := maxcpus=4 boot_cpus=0-3 console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 user_debug=31 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x37 androidboot.hardware=p1 androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x0000000 --ramdisk_offset 0x02200000 --tags_offset 0x00000100
@@ -37,7 +37,7 @@ TARGET_CUSTOM_DTBTOOL := dtbTool_lgg4
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_SOURCE := kernel/lge/g4
+TARGET_KERNEL_SOURCE := kernel/lge/msm8992
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 TARGET_KERNEL_CONFIG := twrp_g4_defconfig
 
@@ -60,6 +60,9 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/soc.0/f9200000.ssusb/f9200000.d
 TW_NO_USB_STORAGE := true
 TW_EXCLUDE_SUPERSU := true
 TW_NEW_ION_HEAP := true
+
+# temperature path
+TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone15/temp
 
 # NTFS (R/W access)
 TW_INCLUDE_NTFS_3G := true
@@ -89,13 +92,16 @@ TW_IGNORE_MISC_WIPE_DATA := true
 TW_EXCLUDE_TWRPAPP := true
 
 # FDE crypto
+PLATFORM_VERSION := 16.1.0
 TW_INCLUDE_CRYPTO := true
-# https://github.com/omnirom/android_bootable_recovery/commit/71c6c50d0d
-TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+TARGET_HW_DISK_ENCRYPTION := true
+TARGET_LEGACY_HW_DISK_ENCRYPTION := true
+BOARD_USES_QCOM_DECRYPTION := true
+TARGET_PROVIDES_KEYMASTER := true
 
 # TWRP debug flags
-TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+#TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
 #TARGET_RECOVERY_DEVICE_MODULES += strace debuggerd
 #TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_OPTIONAL_EXECUTABLES)/strace $(TARGET_OUT_EXECUTABLES)/debuggerd
 

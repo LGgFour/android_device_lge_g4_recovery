@@ -1,8 +1,20 @@
 [
-        {
-                "remote":"github",
-                "repository":"Suicide-Squirrel/Titan-Kernel-LG-G4",
-                "target_path":"kernel/lge/g4",
-                "revision":"android-9.0_sfx"
-        }
+    {
+        "remote":"github",
+        "repository":"LGgFour/kernel_lge_msm8992",
+        "target_path":"kernel/lge/msm8992",
+        "revision":"android-9.0"
+    },
+    {
+        "remote": "TeamWin",
+        "repository": "android_device_qcom_common",
+        "target_path": "device/qcom/common",
+        "revision": "android-9.0"
+    },
+    {
+        "remote": "TeamWin",
+        "repository": "android_device_qcom_twrp-common",
+        "target_path": "device/qcom/twrp-common",
+        "revision": "android-9.0"
+    }
 ]
